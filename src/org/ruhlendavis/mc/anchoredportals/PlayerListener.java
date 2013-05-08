@@ -4,11 +4,13 @@
  */
 package org.ruhlendavis.mc.anchoredportals;
 
+import org.bukkit.event.Listener;
+
 /**
  *
  * @author Iain E. Davis <iain@ruhlendavis.org>
  */
-public class PlayerListener
+public class PlayerListener implements Listener
 {
 
 }
