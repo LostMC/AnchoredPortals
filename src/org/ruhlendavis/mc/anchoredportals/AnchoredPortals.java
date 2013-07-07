@@ -1,5 +1,6 @@
 package org.ruhlendavis.mc.anchoredportals;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
@@ -33,7 +34,7 @@ public final class AnchoredPortals extends JavaPlugin
 		{
 			log.warning("Plugin Metrics submission failed.");
 		}
-		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+		getServer().getPluginManager().registerEvents(new PlayerListener(new File (getDataFolder(), "Players")), this);
 	}
 
 	/**
