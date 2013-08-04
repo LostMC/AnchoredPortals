@@ -16,13 +16,15 @@ public final class AnchoredPortals extends JavaPlugin
 {
 	public static Log log;
 	private static Metrics metrics;
-
+	private static AnchoredPortals instance;
+	
 	/**
 	 * Called by Minecraft when enabling the plugin.
 	 */
 	@Override
 	public void onEnable()
 	{
+		instance = this;
 		log = new Log(this.getLogger(), Level.CONFIG);
 		try
 		{
@@ -34,7 +36,7 @@ public final class AnchoredPortals extends JavaPlugin
 		{
 			log.warning("Plugin Metrics submission failed.");
 		}
-		getServer().getPluginManager().registerEvents(new PlayerListener(new File (getDataFolder(), "Players")), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(new File (getDataFolder(), "Players")), this);
 	}
 
 	/**
@@ -43,6 +45,7 @@ public final class AnchoredPortals extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-
+		// The last thing we will do
+		instance = null;
 	}
 }
