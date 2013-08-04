@@ -13,6 +13,7 @@ import org.bukkit.World.Environment;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
@@ -44,25 +45,44 @@ public class PlayerListener implements Listener
 	{
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerPortalEvent(PlayerPortalEvent event)
 	{
 		if (event.getCause() == TeleportCause.NETHER_PORTAL)
 		{
-			Location from = event.getFrom();
-			Location to = event.getTo();
-
-			Environment fromEnvironment = from.getWorld().getEnvironment();
-			Environment toEnvironment = to.getWorld().getEnvironment();
+			Environment fromEnvironment = event.getFrom().getWorld().getEnvironment();
+			Environment toEnvironment = event.getTo().getWorld().getEnvironment();
 
 			File dataFile = new File(playerFolder, event.getPlayer().getName() + ".yml");
 			FileConfiguration playerData = YamlConfiguration.loadConfiguration(dataFile);
+			
 			if (fromEnvironment == Environment.NETHER && toEnvironment == Environment.NORMAL)
 			{
+				// Check for a record and use it.
 			}
 			else if (fromEnvironment == Environment.NORMAL && toEnvironment == Environment.NETHER)
 			{
+				// Record the destination.
 			}
 		}
+	}
+	
+	/**
+	 * Handles when a player is going from the nether to the overworld.
+	 * 
+	 * @param event PlayerPortalEvent object for this 'event'.
+	 */
+	private void toOverWorld(PlayerPortalEvent event)
+	{
+		
+	}
+	
+	/**
+	 * Handles when a player is going from overworld to the nether.
+	 * 
+	 * @param event PlayerPortalEvent object for this 'event'.
+	 */
+	private void toNether(PlayerPortalEvent event)
+	{
 	}
 }
