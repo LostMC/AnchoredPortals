@@ -52,7 +52,7 @@ public final class AnchoredPortals extends JavaPlugin
 			anchors.add(Anchor.fromFileConfig(this.getConfig(), "anchors." + key));
 		}
 		
-		Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(new File (getDataFolder(), "Players")), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 	}
 
 	/**

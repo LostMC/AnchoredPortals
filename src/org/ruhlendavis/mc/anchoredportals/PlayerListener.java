@@ -29,14 +29,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
  */
 public class PlayerListener implements Listener
 {
-	private static File playerFolder;
-
-	PlayerListener(File playerFolder)
-	{
-		PlayerListener.playerFolder = playerFolder;
-	}
-
-
 	@EventHandler
 	public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event)
 	{
@@ -55,9 +47,6 @@ public class PlayerListener implements Listener
 			Environment fromEnvironment = event.getFrom().getWorld().getEnvironment();
 			Environment toEnvironment = event.getTo().getWorld().getEnvironment();
 
-			File dataFile = new File(playerFolder, event.getPlayer().getName() + ".yml");
-			FileConfiguration playerData = YamlConfiguration.loadConfiguration(dataFile);
-			
 			if (fromEnvironment == Environment.NETHER && toEnvironment == Environment.NORMAL)
 			{
 				toOverWorld(event);
