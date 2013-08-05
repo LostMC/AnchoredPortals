@@ -2,6 +2,8 @@ package org.ruhlendavis.mc.anchoredportals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,6 +19,7 @@ public final class AnchoredPortals extends JavaPlugin
 	public static Log log;
 	private static Metrics metrics;
 	private static AnchoredPortals instance;
+	public static List<Anchor> anchors;
 	
 	/**
 	 * Called by Minecraft when enabling the plugin.
@@ -25,7 +28,7 @@ public final class AnchoredPortals extends JavaPlugin
 	public void onEnable()
 	{
 		instance = this;
-		log = new Log(this.getLogger(), Level.CONFIG);
+		log = new Log(this.getLogger(), Level.ALL);
 		try
 		{
 			metrics = new Metrics(this);
@@ -36,6 +39,8 @@ public final class AnchoredPortals extends JavaPlugin
 		{
 			log.warning("Plugin Metrics submission failed.");
 		}
+		
+		anchors = new ArrayList<Anchor>();
 		Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(new File (getDataFolder(), "Players")), this);
 	}
 
@@ -45,6 +50,13 @@ public final class AnchoredPortals extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
+		anchors = null;
+		if (metrics != null)
+		{
+			metrics.cancelTask();
+			metrics = null;
+		}
+
 		// The last thing we will do
 		instance = null;
 	}
