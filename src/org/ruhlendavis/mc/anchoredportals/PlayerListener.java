@@ -4,6 +4,7 @@
  */
 package org.ruhlendavis.mc.anchoredportals;
 
+import java.util.Iterator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
@@ -61,8 +62,10 @@ public class PlayerListener implements Listener
 		Location fromPortal = portalIdentifyingLocation(event.getPortalTravelAgent().findPortal(event.getFrom()));
 		Location toPortal = portalIdentifyingLocation(event.getPortalTravelAgent().findOrCreate(event.getTo()));
 		
-		for (Anchor anchor : AnchoredPortals.anchors)
+		for (Iterator<Anchor> iterator = AnchoredPortals.anchors.iterator(); iterator.hasNext();)
 		{
+			Anchor anchor = iterator.next();
+			
 			if (event.getPlayer().getName().equals(anchor.getPlayerName()) && fromPortal.getBlockX() == anchor.getNetherTerminus().getBlockX() && fromPortal.getBlockY() == anchor.getNetherTerminus().getBlockY() && fromPortal.getBlockZ() == anchor.getNetherTerminus().getBlockZ())
 			{
 				// This way, we preserve the yaw/pitch/facing/etc.
@@ -70,6 +73,8 @@ public class PlayerListener implements Listener
 				toPortal.setY(anchor.getOverworldTerminus().getBlockY());
 				toPortal.setZ(anchor.getOverworldTerminus().getBlockZ());
 				event.setTo(toPortal);
+				iterator.remove();
+				break;
 			}
 		}
 	}

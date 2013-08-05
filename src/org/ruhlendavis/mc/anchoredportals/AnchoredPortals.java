@@ -69,6 +69,9 @@ public final class AnchoredPortals extends JavaPlugin
 	{
 		int i = 0;
 		
+		// Clear the current set of anchors.
+		this.getConfig().set("anchors", null);
+		
 		for (Anchor anchor : anchors)
 		{
 			i++;
