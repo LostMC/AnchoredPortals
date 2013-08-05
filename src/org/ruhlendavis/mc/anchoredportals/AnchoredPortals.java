@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 import org.ruhlendavis.mc.utility.Log;
@@ -44,12 +45,17 @@ public final class AnchoredPortals extends JavaPlugin
 		
 		this.saveDefaultConfig();
 		
-		Set<String> anchorKeys = this.getConfig().getConfigurationSection("anchors").getKeys(false);
-		
 		AnchoredPortals.anchors = new ArrayList<Anchor>();
-		for (String key : anchorKeys)
+		ConfigurationSection anchorSection = this.getConfig().getConfigurationSection("anchors");
+		
+		if (anchorSection != null)
 		{
-			anchors.add(Anchor.fromFileConfig(this.getConfig(), "anchors." + key));
+			Set<String> anchorKeys = anchorSection.getKeys(false);
+		
+			for (String key : anchorKeys)
+			{
+				anchors.add(Anchor.fromFileConfig(this.getConfig(), "anchors." + key));
+			}
 		}
 		
 		Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
@@ -61,6 +67,16 @@ public final class AnchoredPortals extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
+		int i = 0;
+		
+		for (Anchor anchor : anchors)
+		{
+			i++;
+			anchor.toFileConfig(this.getConfig(), "anchors." + i);
+		}
+		
+		this.saveConfig();
+		
 		anchors = null;
 		if (metrics != null)
 		{
