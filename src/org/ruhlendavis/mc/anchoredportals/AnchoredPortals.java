@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +30,7 @@ public final class AnchoredPortals extends JavaPlugin
 	{
 		instance = this;
 		log = new Log(this.getLogger(), Level.ALL);
+		
 		try
 		{
 			metrics = new Metrics(this);
@@ -40,7 +42,16 @@ public final class AnchoredPortals extends JavaPlugin
 			log.warning("Plugin Metrics submission failed.");
 		}
 		
-		anchors = new ArrayList<Anchor>();
+		this.saveDefaultConfig();
+		
+		Set<String> anchorKeys = this.getConfig().getConfigurationSection("anchors").getKeys(false);
+		
+		AnchoredPortals.anchors = new ArrayList<Anchor>();
+		for (String key : anchorKeys)
+		{
+			anchors.add(Anchor.fromFileConfig(this.getConfig(), "anchors." + key));
+		}
+		
 		Bukkit.getServer().getPluginManager().registerEvents(new PlayerListener(new File (getDataFolder(), "Players")), this);
 	}
 
