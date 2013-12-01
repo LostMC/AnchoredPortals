@@ -1,6 +1,5 @@
 package org.ruhlendavis.mc.anchoredportals;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +82,14 @@ public final class AnchoredPortals extends JavaPlugin
 		anchors = null;
 		if (metrics != null)
 		{
-			metrics.cancelTask();
+			try 
+			{
+				metrics.cancelTask();
+			}
+			catch (NoSuchMethodError exception) 
+			{
+				log.warning("Metrics cancelTask() method unavailable: " + exception.getMessage());
+			}
 			metrics = null;
 		}
 
