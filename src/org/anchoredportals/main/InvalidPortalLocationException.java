@@ -1,4 +1,4 @@
-package org.ruhlendavis.mc.anchoredportals;
+package org.anchoredportals.main;
 
 /**
  *

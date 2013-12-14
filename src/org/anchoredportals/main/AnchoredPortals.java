@@ -1,4 +1,4 @@
-package org.ruhlendavis.mc.anchoredportals;
+package org.anchoredportals.main;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
-import org.ruhlendavis.mc.utility.Log;
+import org.anchoredportals.utility.Log;
 
 /**
  *

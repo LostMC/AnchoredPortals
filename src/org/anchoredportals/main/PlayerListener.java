@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ruhlendavis.mc.anchoredportals;
+package org.anchoredportals.main;
 
 import java.util.Iterator;
 import org.bukkit.Location;
