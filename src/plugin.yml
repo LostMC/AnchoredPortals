@@ -1,7 +1,7 @@
 name: AnchoredPortals
-version: 1.0.0.40
+version: 1.0.0.41
 description: Plugin to "anchor" a given portal to another portal.
 author: Feaelin (Iain E. Davis) <iain@ruhlendavis.org>
 website: http://dev.bukkit.org/bukkit-plugins/anchoredportals/
 
-main: org.ruhlendavis.mc.anchoredportals.AnchoredPortals
+main: org.anchoredportals.main.AnchoredPortals
