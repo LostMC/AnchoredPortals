@@ -5,15 +5,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
-/**
- * Representation of an "anchor" (link between a given pair of nether portals) in memory.
- * 
- * @author Feaelin (Iain E. Davis) <iain@ruhlendavis.org>
- */
 public class Anchor
 {
 	private Location overworldTerminus;
+	private String overworldWorldName;
 	private Location netherTerminus;
+	private String netherWorldName;
 	private String playerName;
 
 	public Location getOverworldTerminus()
@@ -23,6 +20,7 @@ public class Anchor
 
 	public void setOverworldTerminus(Location overworldTerminus)
 	{
+		overworldWorldName = overworldTerminus.getWorld().getName();
 		this.overworldTerminus = overworldTerminus;
 	}
 
@@ -33,6 +31,7 @@ public class Anchor
 
 	public void setNetherTerminus(Location netherTerminus)
 	{
+		netherWorldName = netherTerminus.getWorld().getName();
 		this.netherTerminus = netherTerminus;
 	}
 
@@ -45,53 +44,41 @@ public class Anchor
 	{
 		this.playerName = playerName;
 	}
-	/**
-	 * Create an anchor from a file configuration path.
-	 * 
-	 * @param config FileConfiguration to fetch the data from
-	 * @param path Path to the anchor's data.
-	 * @return The newly created anchor.
-	 * 
-	 */
+
 	public static Anchor fromFileConfig(FileConfiguration config, String path)
 	{
 		World world = Bukkit.getWorld(config.getString(path + ".Overworld.Name"));
 		Double x = config.getDouble(path + ".Overworld.X");
 		Double y = config.getDouble(path + ".Overworld.Y");
 		Double z = config.getDouble(path + ".Overworld.Z");
-		
+
 		Location overworldTerminus = new Location(world, x, y, z);
-		
+
 		world = Bukkit.getWorld(config.getString(path + ".Nether.Name"));
 		x = config.getDouble(path + ".Nether.X");
 		y = config.getDouble(path + ".Nether.Y");
 		z = config.getDouble(path + ".Nether.Z");
-		
+
 		Location netherTerminus = new Location(world, x, y, z);
 
 		Anchor anchor = new Anchor();
 		anchor.setPlayerName(config.getString(path + ".player"));
 		anchor.setOverworldTerminus(overworldTerminus);
 		anchor.setNetherTerminus(netherTerminus);
-		
+
 		return anchor;
 	}
-	/**
-	 * Given a config and a path, adds properties for this anchor to that config at the specified path.
-	 * 
-	 * @param config FileConfiguration to add the properties to.
-	 * @param path Path to this anchor in the config. Do NOT include a trailing period (.).
-	 */
+
 	public void toFileConfig(FileConfiguration config, String path)
 	{
-		config.set(path + ".player", this.playerName);
-		config.set(path + ".Overworld.Name", this.getOverworldTerminus().getWorld().getName());
-		config.set(path + ".Overworld.X", this.getOverworldTerminus().getBlockX());
-		config.set(path + ".Overworld.Y", this.getOverworldTerminus().getBlockY());
-		config.set(path + ".Overworld.Z", this.getOverworldTerminus().getBlockZ());
-		config.set(path + ".Nether.Name", this.getNetherTerminus().getWorld().getName());
-		config.set(path + ".Nether.X", this.getNetherTerminus().getBlockX());
-		config.set(path + ".Nether.Y", this.getNetherTerminus().getBlockY());
-		config.set(path + ".Nether.Z", this.getNetherTerminus().getBlockZ());
+		config.set(path + ".player", playerName);
+		config.set(path + ".Overworld.Name", overworldWorldName);
+		config.set(path + ".Overworld.X", overworldTerminus.getBlockX());
+		config.set(path + ".Overworld.Y", overworldTerminus.getBlockY());
+		config.set(path + ".Overworld.Z", overworldTerminus.getBlockZ());
+		config.set(path + ".Nether.Name", netherWorldName);
+		config.set(path + ".Nether.X", netherTerminus.getBlockX());
+		config.set(path + ".Nether.Y", netherTerminus.getBlockY());
+		config.set(path + ".Nether.Z", netherTerminus.getBlockZ());
 	}
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.anchoredportals.main;
 
 import java.util.Iterator;
@@ -17,10 +13,6 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-/**
- *
- * @author Iain E. Davis <iain@ruhlendavis.org>
- */
 public class PlayerListener implements Listener
 {
 	@EventHandler
@@ -51,21 +43,16 @@ public class PlayerListener implements Listener
 			}
 		}
 	}
-	
-	/**
-	 * Handles when a player is going from the nether to the overworld.
-	 * 
-	 * @param event PlayerPortalEvent object for this 'event'.
-	 */
+
 	private void toOverWorld(PlayerPortalEvent event)
 	{
 		Location fromPortal = portalIdentifyingLocation(event.getPortalTravelAgent().findPortal(event.getFrom()));
 		Location toPortal = portalIdentifyingLocation(event.getPortalTravelAgent().findOrCreate(event.getTo()));
-		
+
 		for (Iterator<Anchor> iterator = AnchoredPortals.anchors.iterator(); iterator.hasNext();)
 		{
 			Anchor anchor = iterator.next();
-			
+
 			if (event.getPlayer().getName().equals(anchor.getPlayerName()) && fromPortal.getBlockX() == anchor.getNetherTerminus().getBlockX() && fromPortal.getBlockY() == anchor.getNetherTerminus().getBlockY() && fromPortal.getBlockZ() == anchor.getNetherTerminus().getBlockZ())
 			{
 				// This way, we preserve the yaw/pitch/facing/etc.
@@ -78,29 +65,22 @@ public class PlayerListener implements Listener
 			}
 		}
 	}
-	
-	/**
-	 * Handles when a player is going from overworld to the nether.
-	 * 
-	 * @param event PlayerPortalEvent object for this 'event'.
-	 */
+
 	private void toNether(PlayerPortalEvent event)
 	{
 		Anchor anchor = new Anchor();
 		anchor.setOverworldTerminus(portalIdentifyingLocation(event.getPortalTravelAgent().findPortal(event.getFrom())));
 		anchor.setNetherTerminus(portalIdentifyingLocation(event.getPortalTravelAgent().findPortal(event.getPortalTravelAgent().findOrCreate(event.getTo()))));
 		anchor.setPlayerName(event.getPlayer().getName());
-		
+
 		AnchoredPortals.anchors.add(anchor);
 	}
 
 	/*
 	 * Returns the northwest most location of the two possible portal locations.
-	 * 
 	 */
 	private Location portalIdentifyingLocation(Location location) throws InvalidPortalLocationException
 	{
-		AnchoredPortals.log.info(location.toString());
 		location.add(0,1,0);
 		if (location.getBlock().getRelative(BlockFace.NORTH).getType() == Material.PORTAL)
 		{
