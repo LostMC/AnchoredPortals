@@ -46,7 +46,11 @@ public final class AnchoredPortals extends JavaPlugin
 
 			for (String key : anchorKeys)
 			{
-				anchors.add(Anchor.fromFileConfig(this.getConfig(), "anchors." + key));
+				Anchor anchor = Anchor.fromFileConfig(this.getConfig(), "anchors." + key);
+				if (anchor != null)
+				{
+					anchors.add(anchor);
+				}
 			}
 		}
 

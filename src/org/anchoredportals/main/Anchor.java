@@ -1,7 +1,9 @@
 package org.anchoredportals.main;
 
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -11,7 +13,7 @@ public class Anchor
 	private String overworldWorldName;
 	private Location netherTerminus;
 	private String netherWorldName;
-	private String playerName;
+	private UUID uuid;
 
 	public Location getOverworldTerminus()
 	{
@@ -35,14 +37,14 @@ public class Anchor
 		this.netherTerminus = netherTerminus;
 	}
 
-	public String getPlayerName()
+	public UUID getUuid()
 	{
-		return playerName;
+		return uuid;
 	}
 
-	public void setPlayerName(String playerName)
+	public void setUuid(UUID uuid)
 	{
-		this.playerName = playerName;
+		this.uuid = uuid;
 	}
 
 	public static Anchor fromFileConfig(FileConfiguration config, String path)
@@ -62,7 +64,28 @@ public class Anchor
 		Location netherTerminus = new Location(world, x, y, z);
 
 		Anchor anchor = new Anchor();
-		anchor.setPlayerName(config.getString(path + ".player"));
+		String uuidString = config.getString(path + ".uuid", "");
+		UUID uuid;
+		// This complexity is only necessary for a few months while
+		// we're in transition from name to UUID. 2014-05-30 IED.
+		if (uuidString.isEmpty())
+		{
+			String name = config.getString(path + ".player");
+			OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+			if (player == null)
+			{
+				return null;
+			}
+			else
+			{
+				uuid = player.getUniqueId();
+			}
+		}
+		else
+		{
+			uuid = UUID.fromString(uuidString);
+		}
+		anchor.setUuid(uuid);
 		anchor.setOverworldTerminus(overworldTerminus);
 		anchor.setNetherTerminus(netherTerminus);
 
@@ -71,7 +94,7 @@ public class Anchor
 
 	public void toFileConfig(FileConfiguration config, String path)
 	{
-		config.set(path + ".player", playerName);
+		config.set(path + ".uuid", uuid.toString());
 		config.set(path + ".Overworld.Name", overworldWorldName);
 		config.set(path + ".Overworld.X", overworldTerminus.getBlockX());
 		config.set(path + ".Overworld.Y", overworldTerminus.getBlockY());

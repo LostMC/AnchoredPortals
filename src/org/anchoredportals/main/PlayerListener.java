@@ -53,7 +53,7 @@ public class PlayerListener implements Listener
 		{
 			Anchor anchor = iterator.next();
 
-			if (event.getPlayer().getName().equals(anchor.getPlayerName()) && fromPortal.getBlockX() == anchor.getNetherTerminus().getBlockX() && fromPortal.getBlockY() == anchor.getNetherTerminus().getBlockY() && fromPortal.getBlockZ() == anchor.getNetherTerminus().getBlockZ())
+			if (event.getPlayer().getUniqueId().equals(anchor.getUuid()) && fromPortal.getBlockX() == anchor.getNetherTerminus().getBlockX() && fromPortal.getBlockY() == anchor.getNetherTerminus().getBlockY() && fromPortal.getBlockZ() == anchor.getNetherTerminus().getBlockZ())
 			{
 				// This way, we preserve the yaw/pitch/facing/etc.
 				toPortal.setX(anchor.getOverworldTerminus().getBlockX());
@@ -71,7 +71,7 @@ public class PlayerListener implements Listener
 		Anchor anchor = new Anchor();
 		anchor.setOverworldTerminus(portalIdentifyingLocation(event.getPortalTravelAgent().findPortal(event.getFrom())));
 		anchor.setNetherTerminus(portalIdentifyingLocation(event.getPortalTravelAgent().findPortal(event.getPortalTravelAgent().findOrCreate(event.getTo()))));
-		anchor.setPlayerName(event.getPlayer().getName());
+		anchor.setUuid(event.getPlayer().getUniqueId());
 
 		AnchoredPortals.anchors.add(anchor);
 	}
